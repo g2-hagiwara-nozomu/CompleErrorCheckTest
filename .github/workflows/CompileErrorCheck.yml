@@ -1,9 +1,11 @@
 name: CheckCompileError
 on:
   pull_request:
+    branches: [ main ]
+    types: [ opened ]
 jobs:
   build:
-    runs-on: macos-latest # 適宜自分の環境に合わせる
+    runs-on: self-hosted # 適宜自分の環境に合わせる
     steps:
       - uses: actions/checkout@v2
         with:
@@ -31,3 +33,33 @@ jobs:
                -H "Authorization: token ${GITHUB_TOKEN}" \
                -d "{\"body\": \"@${ACTOR} ${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/${COMMIT}/${SHA} \"}" \
                ${PULL_REQ_URL}
+
+
+#name: Pull Request Test
+#
+#on:
+#  pull_request:
+#    branches: [ main ]
+#    types: [ opened ]
+#
+#jobs:
+#  test:
+#    runs-on: self-hosted
+#
+#    steps:
+#    - name: Checkout
+#      uses: actions/checkout@v2
+#      with:
+#        fetch-depth: 0
+#        lfs: true
+#        clean: false
+#
+#    - name: Unity Play Mode Test
+#      shell: cmd
+#      run: |
+#        "C:\Program Files\Unity\Hub\Editor\2020.1.2f1\Editor\Unity.exe" -batchmode -projectPath . -runTests -testPlatform PlayMode -testResults TestResult-PlayMode.xml -logFile -
+#    
+#    - name : Unity Edit Mode Test
+#      shell: cmd
+#      run: |
+#        "C:\Program Files\Unity\Hub\Editor\2020.1.2f1\Editor\Unity.exe" -batchmode -projectPath . -runTests -testPlatform EditMode -testResults TestResult-EditMode.xml -logFile -
