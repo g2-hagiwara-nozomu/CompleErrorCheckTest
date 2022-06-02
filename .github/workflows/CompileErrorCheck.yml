@@ -17,7 +17,8 @@ jobs:
       - name: open unity
         env:
           UNITY_PATH: "/Applications/Unity/Hub/Editor/2020.3.18f1/Unity.app/Contents/MacOS/Unity"
-        run: $UNITY_PATH -quit -batchmode  -projectPath $GITHUB_WORKSPACE
+          PROJECT_PATH: "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest/CompleErrorCheskTest"
+        run: $UNITY_PATH -quit -batchmode  -projectPath $PROJECT_PATH
       - name: Post Comment GitHub PullRequest Page
         if: failure()
         # 失敗したときのみ実行される
