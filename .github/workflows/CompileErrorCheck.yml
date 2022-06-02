@@ -19,7 +19,7 @@ jobs:
           UNITY_PATH: "/Applications/Unity/Hub/Editor/2020.3.18f1/Unity.app/Contents/MacOS/Unity"
           PROJECT_PATH: "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest/CompleErrorCheskTest"
         run: $UNITY_PATH -quit -batchmode  -projectPath $PROJECT_PATH
-      - name: Post Comment GitHub PullRequest Page
+      - name: Post Comment GitHub PullRequest Page On Failed
         if: failure()
         # 失敗したときのみ実行される
         env:
@@ -29,6 +29,21 @@ jobs:
           SHA: ${{ github.sha }}
           ACTOR: ${{github.actor}}
           TEXT: "コンパイルエラーが出てます"
+        run: |
+          curl -X POST \
+               -H "Authorization: token ${GITHUB_TOKEN}" \
+               -d "{\"body\": \"@${ACTOR} ${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/${COMMIT}/${SHA} \"}" \
+               ${PULL_REQ_URL}
+      - name: Post Comment GitHub PullRequest Page On Succeed
+        if: success()
+        # 成功したときのみ実行される
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQ_URL: ${{ github.event.pull_request.comments_url }}
+          COMMIT: "commit"
+          SHA: ${{ github.sha }}
+          ACTOR: ${{github.actor}}
+          TEXT: "コンパイルチェック問題なし"
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
