@@ -16,7 +16,7 @@ jobs:
 
       - name: open unity
         env:
-          UNITY_PATH: "/Applications/Unity/Hub/Editor/2020.3.18f1/Unity.app"
+          UNITY_PATH: "/Applications/Unity/Hub/Editor/2020.3.18f1/Unity.app/Contents/MacOS/Unity"
         run: $UNITY_PATH -quit -batchmode  -projectPath $GITHUB_WORKSPACE
       - name: Post Comment GitHub PullRequest Page
         if: failure()
