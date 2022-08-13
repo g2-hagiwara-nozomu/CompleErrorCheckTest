@@ -1,7 +1,7 @@
 name: CheckCompileError
 on:
   pull_request:
-    types: [ closed ]
+    types: [closed]
 jobs:
   build:
     runs-on: self-hosted # 適宜自分の環境に合わせる
@@ -13,8 +13,7 @@ jobs:
           lfs: false
           # 使ってないならOFFにする
       - name: pull target branch
-        cd "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest"
-        git checkout -f ${{ github.base_ref }}
+        run: cd "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest";git checkout -f ${{ github.base_ref }}
 
       - name: open unity
         env:
@@ -37,7 +36,7 @@ jobs:
                -H "Authorization: token ${GITHUB_TOKEN}" \
                -d "{\"body\": \"@${ACTOR} ${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/${COMMIT}/${SHA} \"}" \
                ${PULL_REQ_URL}
-               
+
       - name: Post Comment GitHub PullRequest Page On Succeed
         if: success()
         # 成功したときのみ実行される
@@ -53,7 +52,6 @@ jobs:
                -H "Authorization: token ${GITHUB_TOKEN}" \
                -d "{\"body\": \"@${ACTOR} ${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/${COMMIT}/${SHA} \"}" \
                ${PULL_REQ_URL}
-
 
 #name: Pull Request Test
 #
@@ -78,7 +76,7 @@ jobs:
 #      shell: cmd
 #      run: |
 #        "C:\Program Files\Unity\Hub\Editor\2020.1.2f1\Editor\Unity.exe" -batchmode -projectPath . -runTests -testPlatform PlayMode -testResults TestResult-PlayMode.xml -logFile -
-#    
+#
 #    - name : Unity Edit Mode Test
 #      shell: cmd
 #      run: |
