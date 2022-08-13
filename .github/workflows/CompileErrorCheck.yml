@@ -16,7 +16,11 @@ jobs:
       - name: pull target branch
         env:
           GIT_PATH: "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest"
-        run: cd $GIT_PATH;git checkout -f ${{ github.base_ref }}
+          GIT_BRANCH_NAME: origin/${{ github.base_ref }}
+        run: |
+          cd $GIT_PATH
+          echo $GIT_BRANCH_NAME
+          git checkout -f $GIT_BRANCH_NAME
 
       - name: open unity
         env:
