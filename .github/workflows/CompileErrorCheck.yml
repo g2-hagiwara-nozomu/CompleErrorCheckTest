@@ -22,8 +22,8 @@ jobs:
           cd $GIT_PATH
           echo git checkout -f $GIT_BRANCH_NAME
           git checkout -f $GIT_BRANCH_NAME
-          echo git pull $GIT_REMOTE_BRANCH_NAME
-          git pull $GIT_REMOTE_BRANCH_NAME
+          echo git pull
+          git pull
 
       - name: open unity
         env:
