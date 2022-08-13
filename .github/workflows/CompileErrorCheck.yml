@@ -20,8 +20,9 @@ jobs:
           GIT_REMOTE_BRANCH_NAME: origin/${{ github.base_ref }}
         run: |
           cd $GIT_PATH
-          echo $GIT_BRANCH_NAME
+          echo git checkout -f $GIT_BRANCH_NAME
           git checkout -f $GIT_BRANCH_NAME
+          echo git pull $GIT_REMOTE_BRANCH_NAME
           git pull $GIT_REMOTE_BRANCH_NAME
 
       - name: open unity
