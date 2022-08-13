@@ -12,8 +12,11 @@ jobs:
           # falseにしないと毎回毎回プロジェクト初期化されるので流石に重い
           lfs: false
           # 使ってないならOFFにする
+
       - name: pull target branch
-        run: cd "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest";git checkout -f ${{ github.base_ref }}
+        env:
+          GIT_PATH: "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest"
+        run: cd $GIT_PATH;git checkout -f ${{ github.base_ref }}
 
       - name: open unity
         env:
