@@ -4,20 +4,17 @@ on:
     types: [closed]
 jobs:
   build:
-    runs-on: self-hosted # 適宜自分の環境に合わせる
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
         with:
-          clean: false
-          # falseにしないと毎回毎回プロジェクト初期化されるので流石に重い
+          clean: false #falseにしないと毎回毎回プロジェクト初期化されるので流石に重い
           lfs: false
-          # 使ってないならOFFにする
 
       - name: pull target branch
         env:
           GIT_PATH: "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest"
           GIT_BRANCH_NAME: ${{ github.base_ref }}
-          GIT_REMOTE_BRANCH_NAME: origin/${{ github.base_ref }}
         run: |
           cd $GIT_PATH
           echo git checkout -f $GIT_BRANCH_NAME
@@ -40,7 +37,7 @@ jobs:
           COMMIT: "commit"
           SHA: ${{ github.sha }}
           ACTOR: ${{github.actor}}
-          TEXT: "コンパイルエラーが出てます"
+          TEXT: "コンパイルエラーが出ています"
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
@@ -62,32 +59,3 @@ jobs:
                -H "Authorization: token ${GITHUB_TOKEN}" \
                -d "{\"body\": \"@${ACTOR} ${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/${COMMIT}/${SHA} \"}" \
                ${PULL_REQ_URL}
-
-#name: Pull Request Test
-#
-#on:
-#  pull_request:
-#    branches: [ main ]
-#    types: [ opened ]
-#
-#jobs:
-#  test:
-#    runs-on: self-hosted
-#
-#    steps:
-#    - name: Checkout
-#      uses: actions/checkout@v2
-#      with:
-#        fetch-depth: 0
-#        lfs: true
-#        clean: false
-#
-#    - name: Unity Play Mode Test
-#      shell: cmd
-#      run: |
-#        "C:\Program Files\Unity\Hub\Editor\2020.1.2f1\Editor\Unity.exe" -batchmode -projectPath . -runTests -testPlatform PlayMode -testResults TestResult-PlayMode.xml -logFile -
-#
-#    - name : Unity Edit Mode Test
-#      shell: cmd
-#      run: |
-#        "C:\Program Files\Unity\Hub\Editor\2020.1.2f1\Editor\Unity.exe" -batchmode -projectPath . -runTests -testPlatform EditMode -testResults TestResult-EditMode.xml -logFile -
