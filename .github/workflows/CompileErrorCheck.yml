@@ -27,7 +27,7 @@ jobs:
       # Unityを開いてエラーチェック
       - name: Open Unity
         env:
-          UNITY_PATH: /Applications/Unity/Hub/Editor/${UNITY_VERSION}/Unity.app/Contents/MacOS/Unity
+          UNITY_PATH: /Applications/Unity/Hub/Editor/2020.3.18f1/Unity.app/Contents/MacOS/Unity
           PROJECT_PATH: ${{ github.workspace }}
         run: |
           echo cheking compile error 
