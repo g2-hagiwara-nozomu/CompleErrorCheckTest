@@ -22,6 +22,7 @@ jobs:
         run: |
           echo Ready...
           echo from $GITHUB_REF
+          echo ${GITHUB_WORKSPACE}
 
       # 指定のブランチを展開
       - name: Pull target branch
