@@ -23,6 +23,8 @@ jobs:
           echo Ready...
           echo from $GITHUB_REF
           echo ${ GITHUB_WORKSPACE }
+          echo ${{ github.workspace }}
+          echo ${{ env.GITHUB_WORKSPACE }}
 
       # 指定のブランチを展開
       - name: Pull target branch
@@ -40,7 +42,7 @@ jobs:
       - name: Open Unity
         env:
           UNITY_PATH: "/Applications/Unity/Hub/Editor/${ UNITY_VERSION }/Unity.app/Contents/MacOS/Unity"
-          PROJECT_PATH: ${ github.workspace }
+          PROJECT_PATH: ${ GITHUB_WORKSPACE }
         run: |
           echo cheking compile error 
           $UNITY_PATH -quit -batchmode  -projectPath $PROJECT_PATH
