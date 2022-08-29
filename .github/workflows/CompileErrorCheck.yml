@@ -35,6 +35,8 @@ jobs:
           PROJECT_PATH: ${{ github.workspace }}${{env.PJ_PATH}}
         run: |
           echo cheking compile error 
+          echo $UNITY_PATH
+          echo $PROJECT_PATH
           $UNITY_PATH -quit -batchmode  -projectPath $PROJECT_PATH
 
       # 失敗メッセージ
