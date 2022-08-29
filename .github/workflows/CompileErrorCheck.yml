@@ -40,7 +40,7 @@ jobs:
       - name: Open Unity
         env:
           UNITY_PATH: "/Applications/Unity/Hub/Editor/${{UNITY_VERSION}}/Unity.app/Contents/MacOS/Unity"
-          PROJECT_PATH: "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest/CompleErrorCheskTest"
+          PROJECT_PATH: "${{GITHUB_WORKSPACE}}"
         run: |
           echo cheking compile error 
           $UNITY_PATH -quit -batchmode  -projectPath $PROJECT_PATH
