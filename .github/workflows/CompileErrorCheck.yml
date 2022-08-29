@@ -24,6 +24,7 @@ jobs:
           echo from $GITHUB_REF
           echo ${ GITHUB_WORKSPACE }
           echo ${{ github.workspace }}
+          echo ${{ env.GITHUB_WORKSPACE }}
 
       # 指定のブランチを展開
       - name: Pull target branch
