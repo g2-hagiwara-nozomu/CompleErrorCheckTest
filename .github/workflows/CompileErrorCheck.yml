@@ -23,25 +23,12 @@ jobs:
           echo Ready...
           echo from $GITHUB_REF
           echo ${{ github.workspace }}
-          echo ${{ env.GITHUB_WORKSPACE }}
-
-      # 指定のブランチを展開
-      - name: Pull target branch
-        env:
-          GIT_PATH: "/Users/hagiwara.nozomu/workspace/Projects/CompleErrorCheckTest"
-          GIT_BRANCH_NAME: ${{ github.base_ref }}
-        run: |
-          cd $GIT_PATH
-          echo git checkout -f $GIT_BRANCH_NAME
-          git checkout -f $GIT_BRANCH_NAME
-          echo git pull
-          git pull
 
       # Unityを開いてエラーチェック
       - name: Open Unity
         env:
           UNITY_PATH: "/Applications/Unity/Hub/Editor/${ UNITY_VERSION }/Unity.app/Contents/MacOS/Unity"
-          PROJECT_PATH: ${ GITHUB_WORKSPACE }
+          PROJECT_PATH: ${{ github.workspace }}
         run: |
           echo cheking compile error 
           $UNITY_PATH -quit -batchmode  -projectPath $PROJECT_PATH
@@ -54,7 +41,7 @@ jobs:
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"@${GIT_ACTOR} ${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               -d "{\"body\": \"${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}
 
       # 成功メッセージ
@@ -65,5 +52,5 @@ jobs:
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"@${GIT_ACTOR} ${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               -d "{\"body\": \"${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}
