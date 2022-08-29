@@ -22,7 +22,6 @@ jobs:
         run: |
           echo Ready...
           echo from $GITHUB_REF
-          echo ${ GITHUB_WORKSPACE }
           echo ${{ github.workspace }}
           echo ${{ env.GITHUB_WORKSPACE }}
 
