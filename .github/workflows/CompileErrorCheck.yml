@@ -20,8 +20,8 @@ jobs:
       # 準備
       - name: Ready...
         run: |
-        echo Ready...
-        echo from $GITHUB_REF
+          echo Ready...
+          echo from $GITHUB_REF
 
       # 指定のブランチを展開
       - name: Pull target branch
