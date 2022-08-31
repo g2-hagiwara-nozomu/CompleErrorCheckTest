@@ -25,6 +25,7 @@ jobs:
           echo Ready
           echo from : $GITHUB_REF
           echo at ${{ github.workspace }}
+          echo 03_1
 
       # Unityを開いてエラーチェック
       - name: Open Unity
