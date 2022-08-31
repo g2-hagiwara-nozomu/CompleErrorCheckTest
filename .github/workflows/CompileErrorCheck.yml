@@ -7,7 +7,6 @@ env:
   PULL_REQ_URL: ${{ github.event.pull_request.comments_url }}
   GIT_SHA: ${{ github.sha }}
   GIT_ACTOR: ${{ github.actor }}
-  UNITY_VERSION: 2020.3.18f1
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -30,6 +29,7 @@ jobs:
       # Unityを開いてエラーチェック
       - name: Open Unity
         env:
+          UNITY_VERSION: 2020.3.18f1
           UNITY_PATH: /Applications/Unity/Hub/Editor/${{env.UNITY_VERSION}}/Unity.app/Contents/MacOS/Unity
           PROJECT_PATH: ${{ github.workspace }}/CompleErrorCheskTest
         run: |
