@@ -23,7 +23,7 @@ jobs:
       - name: Ready
         run: |
           echo Ready
-          echo from $GITHUB_REF
+          echo from : $GITHUB_REF
           echo at ${{ github.workspace }}
 
       # Unityを開いてエラーチェック
