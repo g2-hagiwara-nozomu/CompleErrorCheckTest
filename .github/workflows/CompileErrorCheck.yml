@@ -40,7 +40,7 @@ jobs:
       - name: GitHubのPullRequestに失敗メッセージを送信
         if: failure()
         env:
-          TEXT: "コンパイルエラーが出ています"
+          TEXT: "コンパイルエラーが出ています。"
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
