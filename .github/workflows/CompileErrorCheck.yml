@@ -8,7 +8,7 @@ env:
   GIT_SHA: ${{ github.sha }}
   GIT_ACTOR: ${{github.actor}}
   UNITY_VERSION: 2020.3.18f1
-  PROJECT_PATH: ${{ github.workspace }}/rabbit
+  PROJECT_PATH: ${{ github.workspace }}/CompleErrorCheskTest
 jobs:
   build:
     name: Check Compile Error
