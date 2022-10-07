@@ -1,0 +1,23 @@
+name: AutoPRCreate
+on:
+  pull_request:
+    types: [Opened]
+    branches:
+      - "main"
+jobs:
+  build:
+    name: Check Compile Error
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          clean: false
+          lfs: false
+
+      # 準備
+      - name: Ready
+        run: |
+          echo Ready
+          echo from : $GITHUB_REF
+          echo at ${{ github.workspace }}
+          gh pr create --base main --head test03 --title "マージ" --body ""
