@@ -38,7 +38,7 @@ jobs:
       - name: Checkout marged branch
         if: ${{ !contains(github.event.comment.body, 'nonmerge') }}
         run: |
-        git checkout --progress --force refs/remotes/pull/${{ github.event.issue.number }}/merge
+          git checkout --progress --force refs/remotes/pull/${{ github.event.issue.number }}/merge
 
       # 準備
       - name: Ready
