@@ -61,20 +61,20 @@ jobs:
           echo project path : $PROJECT_PATH 
           $UNITY_PATH -quit -batchmode  -projectPath $PROJECT_PATH
 
-      # 失敗メッセージ
-      - name: Error Check
+      # 失敗メッセージ作成
+      - name: Create Error Message
         id: errorMsg
         if: failure()
         run: |
           if [ ${{ steps.unity.outcome }} == 'failure' ]; then
-            echo "text=コンパイルエラーが出ています。再度確認する場合は /recompile とコメントしてください。" >> $GITHUB_OUTPUT
+            echo "text=コンパイルエラーが出ています。/n再度確認する場合は /recompile とコメントしてください。" >> $GITHUB_OUTPUT
           elif [ ${{ steps.checkoutMerged.outcome }} == 'failure' ]; then
-            echo "text=コンパイルエラーの確認に失敗しました。簡易チェックを行う場合は「/recompile nonmerge」とコメントしてください。 cc @g2-hagiwara-nozomu" >> $GITHUB_OUTPUT
+            echo "text=コンパイルエラーの確認に失敗しました。/n簡易\nチェックを行う場合は「/recompile nonmerge」とコメントしてください。 cc @g2-hagiwara-nozomu" >> $GITHUB_OUTPUT
           else
-            echo "text=コンパイルエラーチェックの機能に問題があるようです。内容を確認してください。cc @g2-hagiwara-nozomu" >> $GITHUB_OUTPUT
+            echo "text=コンパイルエラーチェックの機能に問題があるようです。/n内容を確認してください。cc @g2-hagiwara-nozomu" >> $GITHUB_OUTPUT
           fi
 
-      # 失敗メッセージ
+      # 失敗メッセージ送信
       - name: Post Comment GitHub PullRequest Page On Failed
         if: failure()
         env:
@@ -85,7 +85,7 @@ jobs:
                -d "{\"body\": \"${TEXT} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}
 
-      # 成功メッセージ
+      # 成功メッセージ送信
       - name: Post Comment GitHub PullRequest Page On Succeed
         if: success()
         env:
