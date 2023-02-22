@@ -4,7 +4,7 @@ on:
     types: [created]
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  PULL_REQ_URL: ${{ github.event.issue.pull_request.comments_url }}
+  PULL_REQ_URL: ${{ github.event.issue.url }}/comments
   GIT_SHA: ${{ github.sha }}
   GIT_ACTOR: ${{github.actor}}
   UNITY_VERSION: 2020.3.18f1
@@ -24,7 +24,7 @@ jobs:
       - name: Get Branch
         id: pullRequestBranch
         run: |
-          echo "::set-output name=branchname::$(curl -H "Authorization: token ${GITHUB_TOKEN}" ${{ github.event.issue.pull_request.url }} | jq '.head.ref' | sed 's/\"//g')"
+          echo "branchname=$(curl -H "Authorization: token ${{ GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq '.head.ref' | sed 's/\"//g')" >> $GITHUB_OUTPUT
 
       # チェックアウト
       - name: Checkout branch
