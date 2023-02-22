@@ -24,7 +24,7 @@ jobs:
       - name: Get Branch
         id: pullRequestBranch
         run: |
-          echo "branchname=$(curl -H "Authorization: token ${{ GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq '.head.ref' | sed 's/\"//g')" >> $GITHUB_OUTPUT
+          echo "branchname=$(curl -H "Authorization: token ${GITHUB_TOKEN}" ${{ github.event.issue.pull_request.url }} | jq '.head.ref' | sed 's/\"//g')" >> $GITHUB_OUTPUT
 
       # チェックアウト
       - name: Checkout branch
