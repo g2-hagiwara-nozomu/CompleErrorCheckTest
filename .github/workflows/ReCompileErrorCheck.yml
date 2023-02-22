@@ -76,7 +76,7 @@ jobs:
 
       # 失敗メッセージ
       - name: Post Comment GitHub PullRequest Page On Failed
-        if: failure() && steps.unity.outcome == 'failure'
+        if: failure()
         env:
           TEXT: ${{ steps.errorMsg.outputs.text }}
         run: |
