@@ -46,11 +46,11 @@ jobs:
       - name: Post Comment GitHub PullRequest Page On Failed
         if: failure()
         env:
-          TEXT: "コンパイルエラーが出ています。再度確認する場合は[/recompile]とコメントしてください。"
+          TEXT: "コンパイルエラーが発生しています。\n再度確認する場合は /recompile とコメントしてください。\n"
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               -d "{\"body\": \"${TEXT} SHA:${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}
 
       # 成功メッセージ
@@ -61,5 +61,5 @@ jobs:
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               -d "{\"body\": \"${TEXT} SHA:${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}

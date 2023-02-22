@@ -15,6 +15,18 @@ jobs:
     if: contains(github.event.comment.html_url, '/pull/') && startsWith(github.event.comment.body, '/recompile')
     runs-on: self-hosted
     steps:
+      # リアクション
+      - name: Reaction to comment
+        uses: actions/github-script@v3
+        with:
+          script: |
+            await github.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: "eyes",
+            });
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -39,7 +51,6 @@ jobs:
         id: checkoutMerged
         if: ${{ !contains(github.event.comment.body, 'nonmerge') }}
         run: |
-          nome nome
           git fetch origin '+refs/pull/${{ github.event.issue.number }}/merge:refs/remotes/pull/${{ github.event.issue.number }}/merge'
           git checkout --progress --force refs/remotes/pull/${{ github.event.issue.number }}/merge
 
@@ -67,7 +78,7 @@ jobs:
         if: failure()
         run: |
           if [ ${{ steps.unity.outcome }} == 'failure' ]; then
-            echo "text=コンパイルエラーが発生しています。\n再度確認する場合は /recompile とコメントしてください。" >> $GITHUB_OUTPUT
+            echo "text=コンパイルエラーが発生しています。\n再度確認する場合は /recompile とコメントしてください。\n" >> $GITHUB_OUTPUT
           elif [ ${{ steps.checkoutMerged.outcome }} == 'failure' ]; then
             echo "text=コンパイルエラーの確認に失敗しました。cc @g2-hagiwara-nozomu \n簡易チェックを行う場合は「/recompile nonmerge」とコメントしてください。\n" >> $GITHUB_OUTPUT
           else
@@ -82,7 +93,7 @@ jobs:
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"${TEXT} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               -d "{\"body\": \"${TEXT} SHA:${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}
 
       # 成功メッセージ送信
@@ -93,5 +104,5 @@ jobs:
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"${TEXT} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               -d "{\"body\": \"${TEXT} SHA:${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}
