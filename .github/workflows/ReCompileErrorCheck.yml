@@ -4,7 +4,7 @@ on:
     types: [created]
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  PULL_REQ_URL: ${{ github.event.issue.url }}
+  PULL_REQ_URL: ${{ github.event.issue.pull_request.comments_url }}
   GIT_SHA: ${{ github.sha }}
   GIT_ACTOR: ${{github.actor}}
   UNITY_VERSION: 2020.3.18f1
@@ -20,14 +20,19 @@ jobs:
         with:
           node-version: "16"
 
+      # ブランチ名取得
+      - name: Get Branch
+        id: pullRequestBranch
+        run: |
+          echo "::set-output name=branchname::$(curl -H "Authorization: token ${GITHUB_TOKEN}" ${{ github.event.issue.pull_request.url }} | jq '.head.ref' | sed 's/\"//g')"
+
+      # チェックアウト
       - name: Checkout branch
-        env:
-          REF: refs/pull/${{ github.event.issue.number }}/merge
         uses: actions/checkout@v3
         with:
           clean: false
           lfs: false
-          ref: ${REF}
+          ref: ${{ steps.pullRequestBranch.outputs.branchname }}
 
       # 準備
       - name: Ready
@@ -50,11 +55,11 @@ jobs:
       - name: Post Comment GitHub PullRequest Page On Failed
         if: failure()
         env:
-          TEXT: "コンパイルエラーが出ています。再度確認する場合は[/recompile]とコメントしてください。"
+          TEXT: "コンパイルエラーが出ています。再度確認する場合は /recompile とコメントしてください。"
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               -d "{\"body\": \"${TEXT} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}
 
       # 成功メッセージ
@@ -65,5 +70,5 @@ jobs:
         run: |
           curl -X POST \
                -H "Authorization: token ${GITHUB_TOKEN}" \
-               -d "{\"body\": \"${TEXT}　${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               -d "{\"body\": \"${TEXT} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
                ${PULL_REQ_URL}
