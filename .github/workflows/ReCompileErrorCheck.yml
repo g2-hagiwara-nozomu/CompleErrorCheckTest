@@ -17,7 +17,7 @@ jobs:
     steps:
       # リアクション
       - name: Reaction to comment
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
             await github.reactions.createForIssueComment({
