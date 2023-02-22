@@ -38,6 +38,7 @@ jobs:
       - name: Checkout marged branch
         if: ${{ !contains(github.event.comment.body, 'nonmerge') }}
         run: |
+          nome nome
           git fetch origin '+refs/pull/${{ github.event.issue.number }}/merge:refs/remotes/pull/${{ github.event.issue.number }}/merge'
           git checkout --progress --force refs/remotes/pull/${{ github.event.issue.number }}/merge
 
@@ -50,6 +51,7 @@ jobs:
 
       # Unityを開いてエラーチェック
       - name: Open Unity
+        id: unity
         env:
           UNITY_PATH: /Applications/Unity/Hub/Editor/${{env.UNITY_VERSION}}/Unity.app/Contents/MacOS/Unity
         run: |
@@ -59,8 +61,19 @@ jobs:
           $UNITY_PATH -quit -batchmode  -projectPath $PROJECT_PATH
 
       # 失敗メッセージ
-      - name: Post Comment GitHub PullRequest Page On Failed
-        if: failure()
+      - name: Post Comment GitHub PullRequest Page On Failed (Checker Error)
+        if: failure() && steps.unity.outcome != 'failure'
+        env:
+          TEXT: "コンパイルエラーチェック機能に問題があるようです。内容を確認するか、「/recompile nonmerge」とコメントしてみてください。 @g2-hagiwara-nozomu"
+        run: |
+          curl -X POST \
+               -H "Authorization: token ${GITHUB_TOKEN}" \
+               -d "{\"body\": \"${TEXT} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GIT_SHA} \"}" \
+               ${PULL_REQ_URL}
+
+      # 失敗メッセージ
+      - name: Post Comment GitHub PullRequest Page On Failed (Compile Error)
+        if: failure() && steps.unity.outcome == 'failure'
         env:
           TEXT: "コンパイルエラーが出ています。再度確認する場合は /recompile とコメントしてください。"
         run: |
