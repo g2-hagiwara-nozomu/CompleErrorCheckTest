@@ -67,11 +67,11 @@ jobs:
         if: failure()
         run: |
           if [ ${{ steps.unity.outcome }} == 'failure' ]; then
-            echo "text=コンパイルエラーが出ています。/n再度確認する場合は /recompile とコメントしてください。" >> $GITHUB_OUTPUT
+            echo "text=コンパイルエラーが発生しています。\n再度確認する場合は /recompile とコメントしてください。" >> $GITHUB_OUTPUT
           elif [ ${{ steps.checkoutMerged.outcome }} == 'failure' ]; then
-            echo "text=コンパイルエラーの確認に失敗しました。/n簡易\nチェックを行う場合は「/recompile nonmerge」とコメントしてください。 cc @g2-hagiwara-nozomu" >> $GITHUB_OUTPUT
+            echo "text=コンパイルエラーの確認に失敗しました。cc @g2-hagiwara-nozomu \n簡易チェックを行う場合は「/recompile nonmerge」とコメントしてください。\n" >> $GITHUB_OUTPUT
           else
-            echo "text=コンパイルエラーチェックの機能に問題があるようです。/n内容を確認してください。cc @g2-hagiwara-nozomu" >> $GITHUB_OUTPUT
+            echo "text=コンパイルエラーチェックの機能に問題があるようです。cc @g2-hagiwara-nozomu \nエラー内容を確認してください。\n" >> $GITHUB_OUTPUT
           fi
 
       # 失敗メッセージ送信
