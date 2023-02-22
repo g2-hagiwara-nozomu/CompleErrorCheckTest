@@ -4,11 +4,12 @@ on:
     types: [created]
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  PULL_REQ_URL: ${{ github.event.pull_request.comments_url }}
+  PULL_REQ_URL: ${{ github.event.issue.url }}
   GIT_SHA: ${{ github.sha }}
   GIT_ACTOR: ${{github.actor}}
   UNITY_VERSION: 2020.3.18f1
   PROJECT_PATH: ${{ github.workspace }}/CompleErrorCheskTest
+
 jobs:
   build:
     name: Re Check Compile Error
@@ -21,11 +22,13 @@ jobs:
           node-version: "16"
 
       - name: Checkout branch
+        env:
+          REF: refs/pull/${{ github.event.issue.number }}/merge
         uses: actions/checkout@v3
         with:
           clean: false
           lfs: false
-          ref: ${{ steps.upstreambranch.outputs.branchname }}
+          ref: ${{ REF }}
 
       # 準備
       - name: Ready
