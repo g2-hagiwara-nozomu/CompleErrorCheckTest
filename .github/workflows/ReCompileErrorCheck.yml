@@ -19,13 +19,16 @@ jobs:
       - name: Reaction to comment
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const { Octokit } = require("@octokit/rest");
+            const octokit = new Octokit({
+              auth: ${GITHUB_TOKEN},
+            });
             const owner = context.issue.owner;
             const repo = context.issue.repo;
             const id = context.payload.comment.id;
             const reaction = 'eyes';
-            octokit.rest.reactions.createForIssueComment({
+            await octokit.rest.reactions.createForIssueComment({
               owner,
               repo,
               id,
