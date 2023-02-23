@@ -20,12 +20,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16"
+        run: |
+          npm install @actions/core @actions/github @octokit/rest@v18
 
       # リアクション
       - name: Reaction to comment
         uses: actions/github-script@v6
         env:
-          COMMENT_ID: ${{ github.event.issue.comment_id }}
+          COMMENT_ID: ${{ github.event.issue.comment.id }}
         with:
           script: |
             const { Octokit } = require('@octokit/rest');
