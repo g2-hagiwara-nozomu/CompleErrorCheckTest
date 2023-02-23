@@ -20,11 +20,13 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            await github.reactions.createForIssueComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+            const { owner, repo } = context.repo;
+            const octkit = new github.GitHub(process.env.GITHUB_TOKEN)
+            await octokit.reactions.createForIssueComment({
+              owner,
+              repo,
               comment_id: context.payload.comment.id,
-              content: "eyes",
+              content: "eyes"
             });
 
       - name: Setup Node
