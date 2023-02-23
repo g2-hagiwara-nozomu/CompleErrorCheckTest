@@ -21,11 +21,15 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+          const owner = context.issue.owner;
+          const repo = context.issue.repo;
+          const id = context.payload.comment.id;
+          const reaction = 'eyes';
             octokit.rest.reactions.createForIssueComment({
-              context.issue.owner,
-              context.issue.repo,
-              context.payload.comment.id,
-              'eyes'
+              owner,
+              repo,
+              id,
+              reaction
             });
 
       - name: Setup Node
