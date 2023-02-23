@@ -27,7 +27,7 @@ jobs:
       - name: Reaction to comment
         uses: actions/github-script@v6
         env:
-          COMMENT_ID: ${{ github.event.issue.comment.id }}
+          COMMENT_ID: ${{ github.event.comment.id }}
         with:
           script: |
             const { Octokit } = require('@octokit/rest');
