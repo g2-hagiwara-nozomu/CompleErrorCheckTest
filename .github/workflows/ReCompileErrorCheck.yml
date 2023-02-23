@@ -25,7 +25,7 @@ jobs:
               context.issue.owner,
               context.issue.repo,
               context.payload.comment.id,
-              'eyes',
+              'eyes'
             });
 
       - name: Setup Node
