@@ -21,10 +21,14 @@ jobs:
         with:
           node-version: "16"
       - name: Install dependencies
+        id: npm
+        if: ${{ !contains(github.event.comment.body, 'simple') }}
         run: npm install @actions/core @actions/github @octokit/rest@v18
 
       # リアクション
       - name: Reaction to comment
+        id: reaction
+        if: ${{ !contains(github.event.comment.body, 'simple') }}
         uses: actions/github-script@v6
         env:
           COMMENT_ID: ${{ github.event.comment.id }}
@@ -62,8 +66,9 @@ jobs:
       # マージ後のチェックアウト
       - name: Checkout marged branch
         id: checkoutMerged
-        if: ${{ !contains(github.event.comment.body, 'nonmerge') }}
+        if: ${{ !contains(github.event.comment.body, 'simple') }}
         run: |
+          git git
           git fetch origin '+refs/pull/${{ github.event.issue.number }}/merge:refs/remotes/pull/${{ github.event.issue.number }}/merge'
           git checkout --progress --force refs/remotes/pull/${{ github.event.issue.number }}/merge
 
@@ -92,8 +97,8 @@ jobs:
         run: |
           if [ ${{ steps.unity.outcome }} == 'failure' ]; then
             echo "text=コンパイルエラーが発生しています。\n再度確認する場合は /recompile とコメントしてください。\n" >> $GITHUB_OUTPUT
-          elif [ ${{ steps.checkoutMerged.outcome }} == 'failure' ]; then
-            echo "text=コンパイルエラーの確認に失敗しました。cc @g2-hagiwara-nozomu \n簡易チェックを行う場合は「/recompile nonmerge」とコメントしてください。\n" >> $GITHUB_OUTPUT
+          elif [ ${{ steps.checkoutMerged.outcome }} == 'failure' || ${{ steps.npm.outcome }} == 'failure' || ${{ steps.reaction.outcome }} == 'failure']; then
+            echo "text=コンパイルエラーの確認に失敗しました。cc @g2-hagiwara-nozomu \n簡易チェックを行う場合は「/recompile simple」とコメントしてください。\n" >> $GITHUB_OUTPUT
           else
             echo "text=コンパイルエラーチェックの機能に問題があるようです。cc @g2-hagiwara-nozomu \nエラー内容を確認してください。\n" >> $GITHUB_OUTPUT
           fi
