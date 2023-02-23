@@ -41,7 +41,7 @@ jobs:
             octokit.rest.reactions.createForIssueComment({
               owner,
               repo,
-              COMMENT_ID,
+              comment_id: COMMENT_ID,
               content: 'eyes'
             });
 
