@@ -18,21 +18,22 @@ jobs:
       # リアクション
       - name: Reaction to comment
         uses: actions/github-script@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const { Octokit } = require("@octokit/rest");
-            const octokit = new Octokit({
-              auth: ${GITHUB_TOKEN},
-            });
-            const owner = context.issue.owner;
-            const repo = context.issue.repo;
-            const id = context.payload.comment.id;
-            const reaction = 'eyes';
-            await octokit.rest.reactions.createForIssueComment({
+            const { Octokit } = require('@octokit/rest');
+            const token = process.env.GITHUB_TOKEN;
+            const octokit = new Octokit({ auth: token });
+
+            const { owner, repo, number } = process.env.GITHUB_EVENT_ISSUE;
+            const comment_id = process.env.GITHUB_EVENT_COMMENT_ID;
+
+            octokit.reactions.createForIssueComment({
               owner,
               repo,
-              id,
-              reaction
+              comment_id,
+              content: 'rocket'
             });
 
       - name: Setup Node
