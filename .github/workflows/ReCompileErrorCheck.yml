@@ -68,7 +68,6 @@ jobs:
         id: checkoutMerged
         if: ${{ !contains(github.event.comment.body, 'simple') }}
         run: |
-          git git
           git fetch origin '+refs/pull/${{ github.event.issue.number }}/merge:refs/remotes/pull/${{ github.event.issue.number }}/merge'
           git checkout --progress --force refs/remotes/pull/${{ github.event.issue.number }}/merge
 
